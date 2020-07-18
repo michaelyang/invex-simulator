@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/invex-simulator/static/css/main.5f361e03.chunk.css",
-    "main.js": "/invex-simulator/static/js/main.ebc5dd6c.chunk.js",
-    "main.js.map": "/invex-simulator/static/js/main.ebc5dd6c.chunk.js.map",
+    "main.js": "/invex-simulator/static/js/main.00d3c467.chunk.js",
+    "main.js.map": "/invex-simulator/static/js/main.00d3c467.chunk.js.map",
     "runtime-main.js": "/invex-simulator/static/js/runtime-main.efdcf7a9.js",
     "runtime-main.js.map": "/invex-simulator/static/js/runtime-main.efdcf7a9.js.map",
-    "static/js/2.50f13872.chunk.js": "/invex-simulator/static/js/2.50f13872.chunk.js",
-    "static/js/2.50f13872.chunk.js.map": "/invex-simulator/static/js/2.50f13872.chunk.js.map",
+    "static/js/2.38a353cc.chunk.js": "/invex-simulator/static/js/2.38a353cc.chunk.js",
+    "static/js/2.38a353cc.chunk.js.map": "/invex-simulator/static/js/2.38a353cc.chunk.js.map",
     "index.html": "/invex-simulator/index.html",
-    "precache-manifest.63b28d9c900d13cece0143fa1d2bf360.js": "/invex-simulator/precache-manifest.63b28d9c900d13cece0143fa1d2bf360.js",
+    "precache-manifest.16c17449e3329e1c6a150e6e806e0ae3.js": "/invex-simulator/precache-manifest.16c17449e3329e1c6a150e6e806e0ae3.js",
     "service-worker.js": "/invex-simulator/service-worker.js",
     "static/css/main.5f361e03.chunk.css.map": "/invex-simulator/static/css/main.5f361e03.chunk.css.map",
-    "static/js/2.50f13872.chunk.js.LICENSE.txt": "/invex-simulator/static/js/2.50f13872.chunk.js.LICENSE.txt"
+    "static/js/2.38a353cc.chunk.js.LICENSE.txt": "/invex-simulator/static/js/2.38a353cc.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.efdcf7a9.js",
-    "static/js/2.50f13872.chunk.js",
+    "static/js/2.38a353cc.chunk.js",
     "static/css/main.5f361e03.chunk.css",
-    "static/js/main.ebc5dd6c.chunk.js"
+    "static/js/main.00d3c467.chunk.js"
   ]
 }
