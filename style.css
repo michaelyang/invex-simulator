@@ -1,0 +1,119 @@
+:root {
+  --pink: #f7717d;
+  --blue: #75b9be;
+  --yellow: #e9b533;
+  --grey: #5e6472;
+  --black: #333;
+}
+
+html {
+  font-size: 10px;
+  font-family: 'Nunito', sans-serif;
+}
+
+.border {
+  height: 1.5rem;
+  width: 100%;
+  background-color: var(--pink);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  background: white;
+  background-size: cover;
+  align-items: center;
+  justify-content: center;
+}
+
+.title {
+  font-size: 2rem;
+}
+
+canvas {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.chart {
+  flex: 1;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.controls {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.fieldwrapper {
+  display: flex;
+  flex-wrap: wrap;
+  width: 80%;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
+}
+
+.control {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.control label {
+  font-size: 1.4rem;
+  font-weight: bold;
+  padding: 0.6rem;
+}
+
+.control input {
+  text-align: center;
+}
+
+.graph-button {
+  border: none;
+  font-family: inherit;
+  font-size: 1.6rem;
+  cursor: pointer;
+  padding: 10px 30px;
+  margin: 15px 30px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  outline: none;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  transition: all 0.3s;
+  background: #33a6cc;
+  color: #ffffff;
+}
+
+.graph-button:hover {
+  background: var(--blue);
+}
+
+.graph-button:active {
+  background: #007299;
+}
+
+.graph-group {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.graph {
+  min-width: 380;
+  max-width: 600px;
+  margin: 0 auto;
+}
