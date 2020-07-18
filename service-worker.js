@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/invex-simulator/precache-manifest.16c17449e3329e1c6a150e6e806e0ae3.js"
+  "/invex-simulator/precache-manifest.e6712da5416b9314e3a34e70f6f8ee00.js"
 );
 
 self.addEventListener('message', (event) => {
