@@ -240,6 +240,13 @@ const graphTypes = {
   RANDOM12STRATEGY: 'random12strategy',
 };
 
+const charts = {
+  [graphTypes.ROLLING12MARKET]: null,
+  [graphTypes.ROLLING12STRATEGY]: null,
+  [graphTypes.RANDOM12MARKET]: null,
+  [graphTypes.RANDOM12STRATEGY]: null,
+};
+
 const graphTypesTitleMap = {
   [graphTypes.ROLLING12MARKET]: 'Market Return (Rolling 12)',
   [graphTypes.ROLLING12STRATEGY]: 'Strategy Return (Rolling 12)',
@@ -256,10 +263,13 @@ const graphTypesColorMap = {
 
 const inputFields = document.querySelectorAll(`input[type=number]`);
 
-const submitButton = document.querySelector(`button[type=submit]`);
-submitButton.addEventListener('click', handleSubmit);
+const simulateButton = document.getElementById(`simulate-button`);
+const changeAxisButton = document.getElementById(`change-axis-button`);
 
-function handleSubmit() {
+simulateButton.addEventListener('click', handleSimulate);
+changeAxisButton.addEventListener('click', handleChangeAxis);
+
+function handleSimulate() {
   const [
     rolling12MarketAmount,
     rolling12StrategyAmount,
@@ -278,12 +288,22 @@ function handleSubmit() {
     random12MarketAmount,
     random12StrategyAmount
   );
-  updateHC(rolling12MarketReturnData, graphTypes.ROLLING12MARKET, minY, maxY);
-  updateHC(rolling12StrategyReturnData, graphTypes.ROLLING12STRATEGY, minY, maxY);
-  updateHC(random12MarketReturnData, graphTypes.RANDOM12MARKET, minY, maxY);
-  updateHC(random12StrategyReturnData, graphTypes.RANDOM12STRATEGY, minY, maxY);
+  if (!charts[graphTypes.ROLLING12MARKET] || !charts[graphTypes.ROLLING12STRATEGY]) {
+    chart(rolling12MarketReturnData, graphTypes.ROLLING12MARKET, minY, maxY);
+    chart(rolling12StrategyReturnData, graphTypes.ROLLING12STRATEGY, minY, maxY);
+  }
+  chart(random12MarketReturnData, graphTypes.RANDOM12MARKET, minY, maxY);
+  chart(random12StrategyReturnData, graphTypes.RANDOM12STRATEGY, minY, maxY);
 }
 
+function handleChangeAxis() {
+  const [_, __, ___, ____, minY, maxY] = Array.from(inputFields.values()).map((data) =>
+    parseFloat(data.value)
+  );
+  for (let key in charts) {
+    charts[key].yAxis[0].setExtremes(minY, maxY);
+  }
+}
 function createHCData(simulationType, marketAmount, strategyAmount) {
   if (simulationType === simulationTypes.ROLLING) {
     return getRolling12Data(marketAmount, strategyAmount);
@@ -352,12 +372,12 @@ function getRandom12Data(marketInitialAmount, strategyInitialAmount) {
   return { random12MarketReturnData, random12StrategyReturnData };
 }
 
-function updateHC(data, graphType, minY, maxY) {
+function chart(data, graphType, minY, maxY) {
   if (!Highcharts.Series.prototype.renderCanvas) {
     throw 'Module not loaded';
   }
 
-  Highcharts.chart(graphType, {
+  charts[graphType] = Highcharts.chart(graphType, {
     chart: {
       zoomType: 'xy',
       height: '60%',
@@ -415,4 +435,4 @@ function updateHC(data, graphType, minY, maxY) {
   });
 }
 
-handleSubmit();
+handleSimulate();
