@@ -375,6 +375,7 @@ function updateHC(data, graphType, maxY = null) {
           text: 'Cumulative Return ($)',
         },
         min: -40000000,
+        max: 60000000,
       },
       {
         labels: {
