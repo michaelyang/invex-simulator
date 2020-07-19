@@ -353,7 +353,7 @@ function updateHC(data, graphType, maxY = null) {
   Highcharts.chart(graphType, {
     chart: {
       zoomType: 'xy',
-      height: '65%',
+      height: '60%',
     },
     boost: {
       useGPUTranslations: true,
