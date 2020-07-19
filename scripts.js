@@ -253,28 +253,41 @@ const graphTypesColorMap = {
   [graphTypes.RANDOM12MARKET]: 'Market Return (Random 12)',
   [graphTypes.RANDOM12STRATEGY]: 'Market Return (Rolling 12)',
 };
+
+const inputFields = document.querySelectorAll(`input[type=number]`);
+const [marketInitialAmount, strategyInitialAmount] = Array.from(inputFields.values()).map((data) =>
+  parseFloat(data.value)
+);
 const submitButton = document.querySelector(`button[type=submit]`);
 submitButton.addEventListener('click', handleSubmit);
 
 function handleSubmit() {
+  const { rolling12MarketReturnData, rolling12StrategyReturnData } = createHCData(
+    simulationTypes.ROLLING
+  );
   const { random12MarketReturnData, random12StrategyReturnData } = createHCData(
     simulationTypes.RANDOM
   );
+  updateHC(rolling12MarketReturnData, graphTypes.ROLLING12MARKET);
+  updateHC(rolling12StrategyReturnData, graphTypes.ROLLING12STRATEGY);
   updateHC(random12MarketReturnData, graphTypes.RANDOM12MARKET);
   updateHC(random12StrategyReturnData, graphTypes.RANDOM12STRATEGY);
 }
 
 function createHCData(simulationType) {
+  const [marketInitialAmount, strategyInitialAmount] = Array.from(
+    inputFields.values()
+  ).map((data) => parseFloat(data.value));
   if (simulationType === simulationTypes.ROLLING) {
-    return getRolling12Data();
+    return getRolling12Data(marketInitialAmount, strategyInitialAmount);
   }
   if (simulationType === simulationTypes.RANDOM) {
-    return getRandom12Data();
+    return getRandom12Data(marketInitialAmount, strategyInitialAmount);
   }
 }
 
 // Returns rolling 12 month data
-function getRolling12Data() {
+function getRolling12Data(marketInitialAmount, strategyInitialAmount) {
   let rolling12MarketReturnData = [];
   let rolling12StrategyReturnData = [];
   if (marketReturnByMonth.length !== strategyReturnByMonth.length) {
@@ -286,24 +299,22 @@ function getRolling12Data() {
     const strategyReturnSimulatedYearData = strategyReturnByMonth.slice(i, i + 12);
     rolling12MarketReturnData.push({
       name: `Trial ${i}`,
-      data: [0, ...marketReturnSimulatedYearData].reduce(
-        (prev, curr, i) => (prev.length > 0 ? [...prev, curr + prev[i - 1]] : [curr]),
-        []
-      ),
+      data: [marketInitialAmount, ...marketReturnSimulatedYearData]
+        .reduce((prev, curr, i) => (prev.length > 0 ? [...prev, curr + prev[i - 1]] : [curr]), [])
+        .map((amount) => (amount - marketInitialAmount) / marketInitialAmount),
     });
     rolling12StrategyReturnData.push({
       name: `Trial ${i}`,
-      data: [0, ...strategyReturnSimulatedYearData].reduce(
-        (prev, curr, i) => (prev.length > 0 ? [...prev, curr + prev[i - 1]] : [curr]),
-        []
-      ),
+      data: [strategyInitialAmount, ...strategyReturnSimulatedYearData]
+        .reduce((prev, curr, i) => (prev.length > 0 ? [...prev, curr + prev[i - 1]] : [curr]), [])
+        .map((amount) => (amount - strategyInitialAmount) / strategyInitialAmount),
     });
   }
   return { rolling12MarketReturnData, rolling12StrategyReturnData };
 }
 
 // Returns random 12 month data
-function getRandom12Data() {
+function getRandom12Data(marketInitialAmount, strategyInitialAmount) {
   let random12MarketReturnData = [];
   let random12StrategyReturnData = [];
   if (marketReturnByMonth.length !== strategyReturnByMonth.length) {
@@ -320,17 +331,15 @@ function getRandom12Data() {
     }
     random12MarketReturnData.push({
       name: `Trial ${i}`,
-      data: [0, ...marketReturnSimulatedYearData].reduce(
-        (prev, curr, i) => (prev.length > 0 ? [...prev, curr + prev[i - 1]] : [curr]),
-        []
-      ),
+      data: [marketInitialAmount, ...marketReturnSimulatedYearData]
+        .reduce((prev, curr, i) => (prev.length > 0 ? [...prev, curr + prev[i - 1]] : [curr]), [])
+        .map((amount) => (amount - marketInitialAmount) / marketInitialAmount),
     });
     random12StrategyReturnData.push({
       name: `Trial ${i}`,
-      data: [0, ...strategyReturnSimulatedYearData].reduce(
-        (prev, curr, i) => (prev.length > 0 ? [...prev, curr + prev[i - 1]] : [curr]),
-        []
-      ),
+      data: [strategyInitialAmount, ...strategyReturnSimulatedYearData]
+        .reduce((prev, curr, i) => (prev.length > 0 ? [...prev, curr + prev[i - 1]] : [curr]), [])
+        .map((amount) => (amount - strategyInitialAmount) / strategyInitialAmount),
     });
   }
   return { random12MarketReturnData, random12StrategyReturnData };
@@ -344,7 +353,7 @@ function updateHC(data, graphType, maxY = null) {
   Highcharts.chart(graphType, {
     chart: {
       zoomType: 'xy',
-      height: '100%',
+      height: '65%',
     },
     boost: {
       useGPUTranslations: true,
@@ -362,11 +371,7 @@ function updateHC(data, graphType, maxY = null) {
       {
         labels: {
           formatter: function () {
-            if (this.value >= 0) {
-              return '$' + this.value;
-            } else {
-              return '-$' + this.value * -1;
-            }
+            return this.value * 100 + '%';
           },
         },
         minPadding: 0,
@@ -374,17 +379,13 @@ function updateHC(data, graphType, maxY = null) {
         title: {
           text: 'Cumulative Return ($)',
         },
-        min: -40000000,
-        max: 60000000,
+        mix: -0.5,
+        max: 3,
       },
       {
         labels: {
           formatter: function () {
-            if (this.value >= 0) {
-              return '$' + this.value;
-            } else {
-              return '-$' + this.value * -1;
-            }
+            return this.value * 100 + '%';
           },
         },
         linkedTo: 0,
