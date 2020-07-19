@@ -12,22 +12,46 @@
     <div class="border"></div>
     <h1 class="title">Simulation</h1>
     <div class="graph-group">
-      <div class="graph" id="rolling12market"></div>
-      <div class="graph" id="rolling12strategy"></div>
+      <div class="graph-with-control">
+        <div class="graph" id="rolling12market"></div>
+        <div class="control">
+          <label for="rolling12MarketAmount">Initial Amount</label>
+          <input type="number" value="100000000" disabled />
+        </div>
+      </div>
+      <div class="graph-with-control">
+        <div class="graph" id="rolling12strategy"></div>
+        <div class="control">
+          <label for="rolling12StrategyAmount">Initial Amount</label>
+          <input type="number" value="20000000" disabled />
+        </div>
+      </div>
     </div>
     <div class="graph-group">
-      <div class="graph" id="random12market"></div>
-      <div class="graph" id="random12strategy"></div>
+      <div class="graph-with-control">
+        <div class="graph" id="random12market"></div>
+        <div class="control">
+          <label for="random12MarketAmount">Initial Amount</label>
+          <input type="number" step="100" name="market" value="100000000" />
+        </div>
+      </div>
+      <div class="graph-with-control">
+        <div class="graph" id="random12strategy"></div>
+        <div class="control">
+          <label for="random12StrategyAmount">Initial Amount</label>
+          <input type="number" step="100" name="strategy" value="20000000" />
+        </div>
+      </div>
     </div>
     <div class="controls">
       <div class="fieldwrapper">
         <div class="control">
-          <label for="marketInitialAmount">Initial Amount</label>
-          <input type="number" step="100" name="market" value="100000000" />
+          <label for="miny">Min Y</label>
+          <input type="number" step="1" name="miny" value="-1" />
         </div>
         <div class="control">
-          <label for="strategyInitialAmount">Initial Amount</label>
-          <input type="number" step="100" name="strategy" value="20000000" />
+          <label for="maxy">Max Y</label>
+          <input type="number" step="1" name="maxy" value="3" />
         </div>
       </div>
       <button type="submit" class="graph-button">Simulate</button>

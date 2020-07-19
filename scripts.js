@@ -242,8 +242,8 @@ const graphTypes = {
 
 const graphTypesTitleMap = {
   [graphTypes.ROLLING12MARKET]: 'Market Return (Rolling 12)',
-  [graphTypes.ROLLING12STRATEGY]: 'Market Return (Rolling 12)',
-  [graphTypes.RANDOM12MARKET]: 'Strategy Return (Random 12)',
+  [graphTypes.ROLLING12STRATEGY]: 'Strategy Return (Rolling 12)',
+  [graphTypes.RANDOM12MARKET]: 'Market Return (Random 12)',
   [graphTypes.RANDOM12STRATEGY]: 'Strategy Return (Random 12)',
 };
 
@@ -255,34 +255,41 @@ const graphTypesColorMap = {
 };
 
 const inputFields = document.querySelectorAll(`input[type=number]`);
-const [marketInitialAmount, strategyInitialAmount] = Array.from(inputFields.values()).map((data) =>
-  parseFloat(data.value)
-);
+
 const submitButton = document.querySelector(`button[type=submit]`);
 submitButton.addEventListener('click', handleSubmit);
 
 function handleSubmit() {
+  const [
+    rolling12MarketAmount,
+    rolling12StrategyAmount,
+    random12MarketAmount,
+    random12StrategyAmount,
+    minY,
+    maxY,
+  ] = Array.from(inputFields.values()).map((data) => parseFloat(data.value));
   const { rolling12MarketReturnData, rolling12StrategyReturnData } = createHCData(
-    simulationTypes.ROLLING
+    simulationTypes.ROLLING,
+    rolling12MarketAmount,
+    rolling12StrategyAmount
   );
   const { random12MarketReturnData, random12StrategyReturnData } = createHCData(
-    simulationTypes.RANDOM
+    simulationTypes.RANDOM,
+    random12MarketAmount,
+    random12StrategyAmount
   );
-  updateHC(rolling12MarketReturnData, graphTypes.ROLLING12MARKET);
-  updateHC(rolling12StrategyReturnData, graphTypes.ROLLING12STRATEGY);
-  updateHC(random12MarketReturnData, graphTypes.RANDOM12MARKET);
-  updateHC(random12StrategyReturnData, graphTypes.RANDOM12STRATEGY);
+  updateHC(rolling12MarketReturnData, graphTypes.ROLLING12MARKET, minY, maxY);
+  updateHC(rolling12StrategyReturnData, graphTypes.ROLLING12STRATEGY, minY, maxY);
+  updateHC(random12MarketReturnData, graphTypes.RANDOM12MARKET, minY, maxY);
+  updateHC(random12StrategyReturnData, graphTypes.RANDOM12STRATEGY, minY, maxY);
 }
 
-function createHCData(simulationType) {
-  const [marketInitialAmount, strategyInitialAmount] = Array.from(
-    inputFields.values()
-  ).map((data) => parseFloat(data.value));
+function createHCData(simulationType, marketAmount, strategyAmount) {
   if (simulationType === simulationTypes.ROLLING) {
-    return getRolling12Data(marketInitialAmount, strategyInitialAmount);
+    return getRolling12Data(marketAmount, strategyAmount);
   }
   if (simulationType === simulationTypes.RANDOM) {
-    return getRandom12Data(marketInitialAmount, strategyInitialAmount);
+    return getRandom12Data(marketAmount, strategyAmount);
   }
 }
 
@@ -345,7 +352,7 @@ function getRandom12Data(marketInitialAmount, strategyInitialAmount) {
   return { random12MarketReturnData, random12StrategyReturnData };
 }
 
-function updateHC(data, graphType, maxY = null) {
+function updateHC(data, graphType, minY, maxY) {
   if (!Highcharts.Series.prototype.renderCanvas) {
     throw 'Module not loaded';
   }
@@ -377,10 +384,10 @@ function updateHC(data, graphType, maxY = null) {
         minPadding: 0,
         maxPadding: 0.05,
         title: {
-          text: 'Cumulative Return ($)',
+          text: 'Return',
         },
-        mix: -0.5,
-        max: 3,
+        min: minY,
+        max: maxY,
       },
       {
         labels: {
@@ -408,9 +415,4 @@ function updateHC(data, graphType, maxY = null) {
   });
 }
 
-const { rolling12MarketReturnData, rolling12StrategyReturnData } = createHCData(
-  simulationTypes.ROLLING
-);
-updateHC(rolling12MarketReturnData, graphTypes.ROLLING12MARKET);
-updateHC(rolling12StrategyReturnData, graphTypes.ROLLING12STRATEGY);
 handleSubmit();
